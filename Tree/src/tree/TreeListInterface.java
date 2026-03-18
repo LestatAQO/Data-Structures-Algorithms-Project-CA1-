@@ -18,5 +18,5 @@ public interface TreeListInterface {
     public TreeApp get(int iPosition);
     public boolean isEmpty();
     public int size();
-    public String printList();
+    public String display();
 }

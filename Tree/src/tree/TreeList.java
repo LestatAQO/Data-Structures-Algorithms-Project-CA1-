@@ -85,7 +85,7 @@ public class TreeList implements TreeListInterface{
     }
     
     @Override
-    public String printList(){
+    public String display(){
         TreeNode tempNode = head;
         String output = "";
         
