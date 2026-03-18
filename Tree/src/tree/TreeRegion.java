@@ -8,7 +8,7 @@ package tree; //For some reason didnt create the file in the same package.
  *
  * @author Lestat Alvarez Quintana Ordiz
  */
-public class TreeRegion extends Tree{
+public class TreeRegion extends TreeApp{
     private String region;
     
     public TreeRegion(int treeNumber, String treeSpecie, String treeLocation){

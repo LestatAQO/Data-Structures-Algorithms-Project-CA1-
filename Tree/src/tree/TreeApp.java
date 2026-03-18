@@ -8,13 +8,13 @@ package tree;
  *17/03/2026
  * @author Lestat Alvarez Quintana Ordiz
  */
-public class Tree {
+public class TreeApp {
     
     private int treeNumber;
     private String treeSpecie;
     private String treeLocation;
     
-    public Tree(int treeNumber, String treeSpecie, String treeLocation){
+    public TreeApp(int treeNumber, String treeSpecie, String treeLocation){
         this.treeNumber = treeNumber;
         this.treeSpecie = treeSpecie;
         this.treeLocation = treeLocation;

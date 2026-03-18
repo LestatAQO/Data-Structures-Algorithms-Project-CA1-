@@ -9,10 +9,10 @@ package tree;
  * @author Lestat Azariel Alvarez Quintana Ordiz
  */
 public class TreeNode {
-    private Tree tree;
+    private TreeApp tree;
     private TreeNode next;
     
-    public TreeNode(Tree inTree, TreeNode inNode){
+    public TreeNode(TreeApp inTree, TreeNode inNode){
         tree = inTree;
         next = inNode;
     }
@@ -23,10 +23,10 @@ public class TreeNode {
     public void setNext(TreeNode inNode){
         next = inNode;
     }
-    public Tree getTree(){
+    public TreeApp getTree(){
         return tree;
     }
-    public void setTree(Tree inTree){
+    public void setTree(TreeApp inTree){
         tree = inTree;
     }
     public String toString(){
