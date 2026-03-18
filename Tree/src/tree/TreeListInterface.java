@@ -10,6 +10,7 @@ package tree;
  * @author Lestat Azariel Alvarez Quintana Ordiz
  */
 
+//Today when I started checking the code done by hamilton in the examples of SLL I notice that on the diagram I didnt do the Interface neither the node, I forgot we had to do them in seperate files (Or at least thats how whe where being taught)
 public interface TreeListInterface {
     public void add(int iPosition, Tree tree);
     public void add(Tree tree);
