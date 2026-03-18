@@ -8,6 +8,7 @@ package tree;
  *
  * @author Lestat Azariel Alvarez Quintana Ordiz
  */
+//this is the data container, used as reference the week 3  https://moodle2025.ncirl.ie/course/section.php?id=40624 
 public class TreeMaintenanceTasks {
     private int priority;
     private String task;
@@ -23,7 +24,7 @@ public class TreeMaintenanceTasks {
         return task;
     }
 
-    public String toString(){
+    public String toString(){ //same as with TreeAPP translates it to a string so its formated and readeable when asking for the output.
         return "Priority level = "+ priority + "\n Task = " + task;
     }
     

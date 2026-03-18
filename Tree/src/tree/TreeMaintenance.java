@@ -9,15 +9,14 @@ package tree;
  * @author Lestat Azariel Alvarez Quintana Ordiz
  */
 import java.util.ArrayList;
-
 public class TreeMaintenance implements TreeMaintenanceInterface{
     
-    private ArrayList <TreeMaintenanceTasks> treeQ;
+    private ArrayList <TreeMaintenanceTasks> treeQ; //Array for the Queue, to save up the tasks.
     public TreeMaintenance(){
         treeQ = new ArrayList<>();
     }
     
-    @Override
+    
     public int size(){
         return treeQ.size();
     }
@@ -26,7 +25,7 @@ public class TreeMaintenance implements TreeMaintenanceInterface{
         return treeQ.isEmpty();
     }
     @Override
-    public void newTask(int priority, String task){
+    public void newTask(int priority, String task){ //Creates a new task, finds the correct index and keeps them sorted on priority. If the index is the last one it appends it.
         TreeMaintenanceTasks newTask = new TreeMaintenanceTasks(priority,task);
         
         int index = insertingPosition(priority);
@@ -38,7 +37,7 @@ public class TreeMaintenance implements TreeMaintenanceInterface{
         }
     }
     
-    private int insertingPosition(int newPriority){
+    private int insertingPosition(int newPriority){ //Goes through the queue to find the position that the new taks will be inserted. organizes it from higher to lowe priority.
         int i;
         for (i = 0; i < treeQ.size(); i++){
             if(treeQ.get(i).getPriority() < newPriority){
@@ -49,7 +48,7 @@ public class TreeMaintenance implements TreeMaintenanceInterface{
     }
     
     @Override
-    public String taskDone(){
+    public String taskDone(){ //removes the highest priority taks FIFO and tells you what was removed.
         if(isEmpty()){
             return "There is no tasks pending";
         }
@@ -57,11 +56,14 @@ public class TreeMaintenance implements TreeMaintenanceInterface{
     }
     
     @Override
-    public String displayTasks(){
+    public String displayTasks(){ //Shows all the taks as a string.
         String output = "";
         for(int i = 0; i < treeQ.size(); i++){
             output += treeQ.get(i).toString()+"\n";
         }
         return output;
+    }
+    public ArrayList<TreeMaintenanceTasks> getTasks(){ //I use this to access it on other file to save on a txt file
+        return treeQ;
     }
 }

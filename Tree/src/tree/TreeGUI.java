@@ -9,17 +9,31 @@ package tree;
  *
  * @author Lestat Alvarez Quintana Ordiz
  */
+import java.io.*;
 public class TreeGUI extends javax.swing.JFrame {
     
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(TreeGUI.class.getName());
 
+    private Tree appManager;
     /**
      * Creates new form TreeGUI
      */
-    public TreeGUI() {
+    public TreeGUI(){
         initComponents();
+        appManager = new Tree(); //I load trees and taks automatically because we did all the file handling before hadn on Tree.
     }
 
+    public boolean isNumber(String text){ //we create a checker of to make sure is just number, ill re use this for priority and tree number.
+        if(text == null || text.length() == 0){
+            return false;
+        }
+        for(int i = 0; i < text.length(); i++){
+            if(!Character.isDigit(text.charAt(i))){
+                return false;
+            }
+        }
+        return true;
+    }
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -42,6 +56,16 @@ public class TreeGUI extends javax.swing.JFrame {
         showTrees = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         showAll = new javax.swing.JTextArea();
+        undoTree = new javax.swing.JButton();
+        jLabel5 = new javax.swing.JLabel();
+        jLabel6 = new javax.swing.JLabel();
+        jLabel7 = new javax.swing.JLabel();
+        toDoTask = new javax.swing.JTextField();
+        jLabel8 = new javax.swing.JLabel();
+        taskPriority = new javax.swing.JTextField();
+        addTaskBtn = new javax.swing.JButton();
+        completeTaskBtn = new javax.swing.JButton();
+        showTaskBtn = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -87,46 +111,98 @@ public class TreeGUI extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(showAll);
 
+        undoTree.setText("Undo");
+        undoTree.addActionListener(this::undoTreeActionPerformed);
+
+        jLabel5.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel5.setText("Tree Maintenance Application");
+
+        jLabel6.setFont(new java.awt.Font("Segoe UI", 0, 18)); // NOI18N
+        jLabel6.setText("Order Maintenance Task");
+
+        jLabel7.setText("What needs to be done?");
+
+        jLabel8.setText("Priority order");
+
+        addTaskBtn.setText("Add Task");
+        addTaskBtn.addActionListener(this::addTaskBtnActionPerformed);
+
+        completeTaskBtn.setText("Complete Task");
+        completeTaskBtn.addActionListener(this::completeTaskBtnActionPerformed);
+
+        showTaskBtn.setText("Show Tasks");
+        showTaskBtn.addActionListener(this::showTaskBtnActionPerformed);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addGap(243, 243, 243)
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 243, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 0, Short.MAX_VALUE))
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 225, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(219, 219, 219))
+            .addGroup(layout.createSequentialGroup()
                 .addGap(81, 81, 81)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(showTrees, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 503, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
+                            .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(treeNumber)
+                            .addComponent(treeSpecie)
+                            .addComponent(treeLocation, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE)
+                            .addComponent(treeRegion))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 78, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(treeRemove)
+                            .addComponent(undoTree)
+                            .addComponent(addTree))
+                        .addGap(208, 208, 208))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel3, javax.swing.GroupLayout.DEFAULT_SIZE, 98, Short.MAX_VALUE)
-                                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                                .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(toDoTask, javax.swing.GroupLayout.PREFERRED_SIZE, 198, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(addTaskBtn)
+                                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 132, javax.swing.GroupLayout.PREFERRED_SIZE))
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                            .addComponent(treeNumber)
-                                            .addComponent(treeSpecie)
-                                            .addComponent(treeLocation, javax.swing.GroupLayout.DEFAULT_SIZE, 163, Short.MAX_VALUE)
-                                            .addComponent(treeRegion))
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 124, Short.MAX_VALUE)
-                                        .addComponent(treeRemove))
+                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                        .addComponent(taskPriority))
                                     .addGroup(layout.createSequentialGroup()
-                                        .addGap(0, 0, Short.MAX_VALUE)
-                                        .addComponent(addTree)))))
-                        .addGap(210, 210, 210))))
+                                        .addGap(57, 57, 57)
+                                        .addComponent(completeTaskBtn)
+                                        .addGap(51, 51, 51)
+                                        .addComponent(showTaskBtn)
+                                        .addGap(0, 0, Short.MAX_VALUE)))))
+                        .addGap(0, 0, Short.MAX_VALUE))))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(263, 263, 263)
+                .addComponent(showTrees, javax.swing.GroupLayout.PREFERRED_SIZE, 141, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel5, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(71, 71, 71)
+                        .addGap(18, 18, 18)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(treeNumber, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -143,15 +219,32 @@ public class TreeGUI extends javax.swing.JFrame {
                             .addComponent(jLabel4, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(treeRegion, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(106, 106, 106)
+                        .addGap(62, 62, 62)
                         .addComponent(addTree)
-                        .addGap(27, 27, 27)
-                        .addComponent(treeRemove)))
-                .addGap(18, 18, 18)
+                        .addGap(18, 18, 18)
+                        .addComponent(treeRemove)
+                        .addGap(18, 18, 18)
+                        .addComponent(undoTree)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(showTrees)
                 .addGap(18, 18, 18)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 165, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(79, Short.MAX_VALUE))
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(33, 33, 33)
+                .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 41, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(toDoTask, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 34, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(taskPriority, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGap(35, 35, 35)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(addTaskBtn)
+                    .addComponent(completeTaskBtn)
+                    .addComponent(showTaskBtn))
+                .addContainerGap(36, Short.MAX_VALUE))
         );
 
         pack();
@@ -174,20 +267,63 @@ public class TreeGUI extends javax.swing.JFrame {
     }//GEN-LAST:event_treeRegionActionPerformed
 
     private void addTreeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addTreeActionPerformed
-        // TODO add your handling code here:
+        if(!isNumber(treeNumber.getText())){ //read the input and validates it. If its valid creates the region and saves the data in the appmanager which will send it to the list, and stack.
+            showAll.setText("The tree number should be numeric");
+            return;
+        }
+        int number = Integer.parseInt(treeNumber.getText());
+        String specie = treeSpecie.getText();
+        String location = treeLocation.getText();
+        String region = treeRegion.getText();
+        
+        TreeApp newTree = new TreeRegion(number, specie, location, region);
+        
+        appManager.addTree(newTree);
+        showAll.setText("The tree has been added");
+        
     }//GEN-LAST:event_addTreeActionPerformed
 
     private void treeRemoveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_treeRemoveActionPerformed
-        // TODO add your handling code here:
+        if(!isNumber(treeNumber.getText())){ //Removes the tree from the position we say. and displays the information of such tree or an error.
+            showAll.setText("The position you choose is invalid");
+            return;
+        }
+        int position = Integer.parseInt(treeNumber.getText());
+        showAll.setText(appManager.removeTree(position));
+        
     }//GEN-LAST:event_treeRemoveActionPerformed
 
     private void showTreesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showTreesActionPerformed
-        // TODO add your handling code here:
+        showAll.setText(appManager.showTrees()); //displays trees on the text area.
     }//GEN-LAST:event_showTreesActionPerformed
 
     private void showAllAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_showAllAncestorAdded
         // TODO add your handling code here:
     }//GEN-LAST:event_showAllAncestorAdded
+
+    private void undoTreeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_undoTreeActionPerformed
+        showAll.setText(appManager.undoTree()); //undoes the tree that was added last to the stack.
+    }//GEN-LAST:event_undoTreeActionPerformed
+
+    private void addTaskBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addTaskBtnActionPerformed
+        if(!isNumber(taskPriority.getText())){ //validates that the priority is numeric, and adds a new task to the queue. On teh corresponding spot depending on priority.
+            showAll.setText("The priority has to be a number");
+            return;
+        }
+        int priority = Integer.parseInt(taskPriority.getText());
+        String task = toDoTask.getText();
+        
+        appManager.orderMaintanace(priority, task);
+        showAll.setText("The task has been added");
+    }//GEN-LAST:event_addTaskBtnActionPerformed
+
+    private void completeTaskBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_completeTaskBtnActionPerformed
+        showAll.setText(appManager.completeTask()); //removes the highest priority task and shows what it was completed.
+    }//GEN-LAST:event_completeTaskBtnActionPerformed
+
+    private void showTaskBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_showTaskBtnActionPerformed
+        showAll.setText(appManager.showTasks()); //shows all tasks
+    }//GEN-LAST:event_showTaskBtnActionPerformed
 
     /**
      * @param args the command line arguments
@@ -215,18 +351,28 @@ public class TreeGUI extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton addTaskBtn;
     private javax.swing.JButton addTree;
+    private javax.swing.JButton completeTaskBtn;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
+    private javax.swing.JLabel jLabel5;
+    private javax.swing.JLabel jLabel6;
+    private javax.swing.JLabel jLabel7;
+    private javax.swing.JLabel jLabel8;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextArea showAll;
+    private javax.swing.JButton showTaskBtn;
     private javax.swing.JButton showTrees;
+    private javax.swing.JTextField taskPriority;
+    private javax.swing.JTextField toDoTask;
     private javax.swing.JTextField treeLocation;
     private javax.swing.JTextField treeNumber;
     private javax.swing.JTextField treeRegion;
     private javax.swing.JButton treeRemove;
     private javax.swing.JTextField treeSpecie;
+    private javax.swing.JButton undoTree;
     // End of variables declaration//GEN-END:variables
 }

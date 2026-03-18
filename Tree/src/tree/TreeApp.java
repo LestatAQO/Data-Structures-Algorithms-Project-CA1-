@@ -14,12 +14,14 @@ public class TreeApp {
     private String treeSpecie;
     private String treeLocation;
     
+    //This is my constructor it initializes my objects.
     public TreeApp(int treeNumber, String treeSpecie, String treeLocation){
         this.treeNumber = treeNumber;
         this.treeSpecie = treeSpecie;
         this.treeLocation = treeLocation;
     }
     
+    //My getters to get the values that where inputted and share it with the other clases.
     public int getTreeNumber(){
         return treeNumber;
     }
@@ -30,7 +32,7 @@ public class TreeApp {
         return treeLocation;
     }
     
-    public String showData(){
+    public String showData(){ //This method unifies the data that was inputted together as one sentence.
         return treeNumber + " - " + treeSpecie + " - " + treeLocation;
     }
     
